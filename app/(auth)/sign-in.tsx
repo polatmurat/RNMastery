@@ -8,6 +8,7 @@ import { Link, router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { Text, ScrollView, View, Image } from 'react-native'
 import { useDispatch } from 'react-redux'
+import { ReactNativeModal } from 'react-native-modal';
 
 const SignIn = () => {
   
@@ -60,7 +61,7 @@ const SignIn = () => {
             onChangeText={(value) => setForm({ ...form, password: value })}
           />
 
-          <CustomButton title='Sign In' onPress={onSignInPress} className='mt-6' />
+          <CustomButton title='Sign In' onPress={onSignInPress} className='mt-6' disabled={response.isLoading} />
 
           <OAuth />
 
@@ -68,10 +69,10 @@ const SignIn = () => {
             <Text>Don't have an account? {" "}</Text>
             <Text className='text-primary-500'>Sign Up</Text>
           </Link>
-
         </View>
 
-        {/* Verification Modal */}
+        {/* <ReactNativeModal isVisible={response.isSuccess}><View className=''>It can be improved.</View></ReactNativeModal> */}
+        
 
       </View>
     </ScrollView>

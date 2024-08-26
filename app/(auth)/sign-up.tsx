@@ -36,7 +36,7 @@ const SignUp = () => {
       
     }
   }, [response]);
-  
+
   return (
     <ScrollView className='flex-1 bg-white'>
       <View className='flex-1 bg-white'>
@@ -69,7 +69,7 @@ const SignUp = () => {
             onChangeText={(value) => setForm({ ...form, password: value })}
           />
 
-          <CustomButton title='Sign Up' onPress={onSignUpPress} className='mt-6' />
+          <CustomButton title='Sign Up' onPress={onSignUpPress} className='mt-6' disabled={response.isLoading} />
 
           <OAuth />
 

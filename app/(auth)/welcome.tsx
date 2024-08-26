@@ -10,7 +10,7 @@ import { initializeAuthState, verifyToken } from '@/features/reducers/authReduce
 import { jwtDecode } from 'jwt-decode';
 
 const OnBoarding = () => {
-  
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
