@@ -12,7 +12,7 @@ const initialState: AuthState = {
     user: null,
 };
 
-const verifyToken = async (keyName: string): Promise<string | null> => {
+export const verifyToken = async (keyName: string): Promise<string | null> => {
     const storage = await SecureStore.getItemAsync(keyName);
     if (storage) {
         const decodedToken: any = jwtDecode(storage);

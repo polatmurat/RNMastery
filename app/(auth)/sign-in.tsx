@@ -2,11 +2,17 @@ import CustomButton from '@/components/CustomButton'
 import InputField from '@/components/InputField'
 import OAuth from '@/components/OAuth'
 import { icons, images } from '@/constants'
-import { Link } from 'expo-router'
-import { useState } from 'react'
+import { setUserToken } from '@/features/reducers/authReducer'
+import { useUserLoginMutation } from '@/features/services/auth/authService'
+import { Link, router } from 'expo-router'
+import { useEffect, useState } from 'react'
 import { Text, ScrollView, View, Image } from 'react-native'
+import { useDispatch } from 'react-redux'
 
 const SignIn = () => {
+  
+  const [login, response] = useUserLoginMutation();
+  const dispatch = useDispatch();
 
   const [form, setForm] = useState({
     email: '',
@@ -14,8 +20,20 @@ const SignIn = () => {
   });
 
   const onSignInPress = async () => {
-
+    await login(form);
   }
+
+  useEffect(() => {
+    if(response.isSuccess) {
+      const token = response?.data?.result?.token;
+      dispatch(setUserToken(token));
+      router.replace('/(root)/(tabs)/home');
+    } else if(response.isError) {
+      const errorData = response?.error?.data || "No data available.";
+      console.log("ERROR : ", errorData);
+      
+    }
+  }, [response])
 
   return (
     <ScrollView className='flex-1 bg-white'>

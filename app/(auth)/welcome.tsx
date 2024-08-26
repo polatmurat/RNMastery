@@ -1,16 +1,46 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
-import { useRef, useState } from 'react'
+import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import { useEffect, useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router';
 import Swiper from 'react-native-swiper';
 import { onboarding } from '@/constants';
 import CustomButton from '@/components/CustomButton';
+import { useDispatch } from 'react-redux';
+import { initializeAuthState, verifyToken } from '@/features/reducers/authReducer';
+import { jwtDecode } from 'jwt-decode';
 
 const OnBoarding = () => {
+  
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await verifyToken('user-token');
+      if (token) {
+        router.replace('/(root)/(tabs)/home');
+        dispatch(initializeAuthState({ userToken: token, user: jwtDecode(token) }));
+      } else {
+        setLoading(false);
+        dispatch(initializeAuthState({ userToken: null, user: null }));
+      }
+    };
+
+    checkToken();
+  }, [dispatch]);
 
   const swiperRef = useRef<Swiper>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const isLastSlide = activeIndex === onboarding.length - 1;
+
+  if (loading) {
+    return (
+      <SafeAreaView className='flex h-full items-center justify-center bg-white'>
+        <ActivityIndicator size="large" color="#0286FF" />
+      </SafeAreaView>
+    );
+  }
+
 
   return (
     <SafeAreaView className='flex h-full items-center justify-between bg-white'>

@@ -6,8 +6,6 @@ import { useEffect } from 'react'
 import "react-native-reanimated";
 import { Provider } from "react-redux";
 
-
-
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
